@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
 
+  resources :users, only: [:new, :create]
+  resources :sessions, only: [:new, :create, :destroy]
   root 'contents#index'
   resources :contents do
-    resources :comments, shallow: true
+  resources :comments, shallow: true
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
