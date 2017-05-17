@@ -1,6 +1,7 @@
 class ContentsController < ApplicationController
-  before_action :authorize, only: [:new, :edit, :update, :destroy]
   
+  before_action :authorize, only: [:new, :edit, :update, :destroy]
+  load_and_authorize_resource
   
   def index
     @contents = Content.all
@@ -27,6 +28,7 @@ class ContentsController < ApplicationController
 
   def edit
     @content = Content.find(params[:id])
+    authorize! :update, @content
   end
 
   def update
@@ -38,18 +40,22 @@ class ContentsController < ApplicationController
   def destroy
     @content = Content.find(params[:id])
     @content.destroy
+    
     redirect_to contents_url
+    
+    
   end
-  
-  private
   
   def authorize
-  redirect_to new_session_path if current_user.nil?
-  
+    redirect_to new_session_path if current_user.nil?
   end
+  
+  
+  private
   
   def content_params
     params.require(:content).permit(:title, :body, :user_id)
   end
+  
   
 end

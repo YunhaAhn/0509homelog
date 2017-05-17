@@ -7,13 +7,21 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  
 
-<% if current_user  %>
-  <%= current_user.email %>님 환영합니다. | <%= link_to '로그아웃하기', session_path, session_path(current_user.id), method: :delete %>
+
+
+<%= link_to "홈으로", root_url %> 
+  <% if current_user %>
+    Logged in as <%= current_user.email %>
+    <%= link_to '로그아웃', session_path(current_user.id), method: :delete %> | <%= link_to "새글쓰기", new_content_path %> 
+    <%= link_to '어드민권한', edit_user_path(current_user.id) %>
+    <%= link_to '모더권한', users_edit_mod_path(current_user.id) %>
   <% else %>
-  <%= link_to '회원가입하기', new_user_path %> | <%= link_to '로그인하기', new_session_path %>
+    <%= link_to '회원가입', new_user_path %> | <%= link_to '로그인', new_session_path %>
+  <% end %>
 
-<% end %>
 <%= yield %>
+
 </body>
 </html>
